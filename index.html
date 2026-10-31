@@ -28,6 +28,7 @@
   var hint = document.getElementById('hint');
   var go = document.getElementById('go');
   var KEY = 'tiaodata_last_good';
+  var BUILTIN = 'https://vancouver-developmental-andrea-pepper.trycloudflare.com';
   var jumped = false;
 
   function showManual(u, why){
@@ -61,9 +62,10 @@
         if (n < 2) { setTimeout(function(){ attempt(n + 1); }, 700); return; }
         var last = null;
         try { last = localStorage.getItem(KEY); } catch(e){}
-        if (last) {
-          showManual(last, '新地址没读到，先给你上次能用的：');
-          setTimeout(function(){ tryJump(last); }, 1200);
+        var back = last || BUILTIN;
+        if (back) {
+          showManual(back, '新地址没读到，先用内置的：');
+          setTimeout(function(){ tryJump(back); }, 1200);
         } else {
           showManual('', '读不到地址，刷新一下。');
         }
@@ -75,7 +77,8 @@
     if (!jumped) {
       var last = null;
       try { last = localStorage.getItem(KEY); } catch(e){}
-      showManual(last, last ? '还没跳过去，点下面直接进：' : '还没跳过去，刷新一下。');
+      var b2 = last || BUILTIN;
+    showManual(b2, b2 ? '还没跳过去，点下面直接进：' : '还没跳过去，刷新一下。');
     }
   }, 6000);
 })();
